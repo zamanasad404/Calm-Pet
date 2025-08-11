@@ -1,0 +1,104 @@
+*{box-sizing:border-box}
+:root{--bg:#0e0f12;--card:#151720;--text:#f6f7fb;--muted:#a5abb7;--accent:#8bd3ff;--focus:2px solid #8bd3ff;--radius:16px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+.topbar,.bottombar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;position:sticky;top:0;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent);backdrop-filter:blur(8px)}
+.bottombar{top:auto;bottom:0;background:linear-gradient(0deg,rgba(0,0,0,.55),transparent)}
+h1{font-size:1.4rem;margin:0}
+main{padding:16px;max-width:960px;margin:0 auto}
+.pet-card{background:var(--card);border-radius:var(--radius);padding:16px}
+.pet{display:grid;place-items:center;border:1px solid #232533;border-radius:12px;padding:10px;background:#0f1118;position:relative;overflow:hidden}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0}
+.stat{display:flex;gap:8px;align-items:center}
+meter{width:100%; transition: all .3s}
+.care-buttons{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+.big{font-size:1.1rem;padding:14px;border-radius:14px;border:1px solid #232533;background:#1a1d28;color:var(--text);position:relative;overflow:hidden}
+.big .icon{font-size:1.4rem;margin-right:6px}
+.primary,.secondary,.ghost{border-radius:12px;border:none;padding:12px 16px;font-weight:600}
+.primary{background:var(--text);color:#111}
+.secondary{background:#232533;color:var(--text)}
+.ghost{background:transparent;border:1px solid #232533;color:var(--text)}
+.small{font-size:.9rem;padding:8px 12px}
+.tabs{display:flex;gap:8px;margin:16px 0}
+.tab{flex:1;border-radius:12px;border:1px solid #232533;background:#141722;color:var(--text);padding:10px}
+.tab.active{outline:var(--focus);}
+.panel{background:var(--card);border-radius:var(--radius);padding:16px}
+.hidden{display:none}
+.routine{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.step{display:flex;align-items:center;gap:10px;border:1px solid #232533;border-radius:12px;padding:12px;background:#141722;position:relative}
+.step.done{opacity:.9; border-color:#3a8bd9; box-shadow:0 0 0 0 rgba(59,130,246,0.6)}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{border:1px solid #232533;border-radius:12px;padding:10px 12px;background:#141722}
+.muted{color:var(--muted)}
+dialog{background:var(--card);color:var(--text);border:1px solid #232533;border-radius:16px;padding:16px}
+button:focus{outline:var(--focus);outline-offset:2px}
+.large-text{font-size:1.2rem}
+.symbol-only .label{display:none}
+
+/* === Playful animations (respect reduced motion via media query) === */
+@media (prefers-reduced-motion:no-preference){
+  /* Care button bounce */
+  .big.bounce{animation:btn-bounce .28s cubic-bezier(.22,1.28,.36,.99)}
+  @keyframes btn-bounce{
+    0%{transform:scale(1)}
+    30%{transform:scale(0.9)}
+    60%{transform:scale(1.05)}
+    100%{transform:scale(1)}
+  }
+
+  /* Sparkles */
+  .sparkle{position:absolute; width:6px; height:6px; border-radius:50%; pointer-events:none; background:currentColor; opacity:.9; filter:drop-shadow(0 0 4px currentColor)}
+  .sparkle.fly{animation:sparkle-fly .6s ease-out forwards}
+  @keyframes sparkle-fly{
+    from{transform:translate(0,0) scale(1); opacity:1}
+    to{transform:translate(var(--dx,20px), var(--dy,-30px)) scale(0.3); opacity:0}
+  }
+
+  /* ADL step check glow */
+  .step.flash{animation:step-flash .5s ease-out}
+  @keyframes step-flash{
+    0%{box-shadow:0 0 0 0 rgba(99,179,237,.8)}
+    100%{box-shadow:0 0 0 16px rgba(99,179,237,0)}
+  }
+  .step.done::after{
+    content:'✓'; position:absolute; right:10px; font-weight:800; transform:scale(0);
+    animation:check-pop .25s ease-out forwards;
+  }
+  @keyframes check-pop{
+    0%{transform:scale(0); opacity:0}
+    70%{transform:scale(1.3); opacity:1}
+    100%{transform:scale(1); opacity:1}
+  }
+
+  /* Panel slide-fade */
+  .panel.enter{animation:panel-in .28s ease-out}
+  .panel.leave{animation:panel-out .22s ease-in}
+  @keyframes panel-in{
+    from{transform:translateY(6px); opacity:0}
+    to{transform:translateY(0); opacity:1}
+  }
+  @keyframes panel-out{
+    from{transform:translateY(0); opacity:1}
+    to{transform:translateY(6px); opacity:0}
+  }
+
+  /* Rewards confetti */
+  .confetti{position:relative}
+  .confetti .star{position:absolute; width:10px; height:10px; transform:translate(-50%,-50%) rotate(45deg); background:currentColor; clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+  .confetti .star.fly{animation:star-fly .8s ease-out forwards}
+  @keyframes star-fly{
+    from{opacity:1; transform:translate(-50%,-50%) rotate(0deg)}
+    to{opacity:0; transform:translate(calc(-50% + var(--dx,0px)), calc(-50% + var(--dy,-60px))) rotate(200deg)}
+  }
+
+  /* Pet idle bob (applied to canvas container) */
+  .pet.idle{animation:pet-bob 3s ease-in-out infinite}
+  @keyframes pet-bob{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-4px)}
+  }
+}
+
+/* Respect user setting toggle too */
+@media (prefers-reduced-motion:reduce){
+  .animate{transition:none!important; animation:none!important}
+}
