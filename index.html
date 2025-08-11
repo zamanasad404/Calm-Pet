@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CareBuddy — Virtual Pet & Daily Living</title>
+  <meta name="theme-color" content="#101114">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <h1>CareBuddy</h1>
+    <div class="actions">
+      <button id="installBtn" class="ghost" hidden aria-label="Install app">Install</button>
+      <button id="a11yBtn" class="ghost" aria-label="Accessibility settings">A11y</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="pet-card" aria-label="Your buddy">
+      <div class="pet" role="img" aria-label="Your digital animal">
+        <canvas id="petCanvas" width="220" height="160" aria-hidden="true"></canvas>
+      </div>
+      <div class="stats">
+        <div class="stat"><span>🍽️</span><meter id="hunger" min="0" max="100"></meter></div>
+        <div class="stat"><span>🧼</span><meter id="hygiene" min="0" max="100"></meter></div>
+        <div class="stat"><span>⚡</span><meter id="energy" min="0" max="100"></meter></div>
+        <div class="stat"><span>🙂</span><meter id="mood" min="0" max="100"></meter></div>
+      </div>
+      <div class="care-buttons">
+        <button class="big" data-action="feed"><span class="icon">🍎</span><span class="label">Feed</span></button>
+        <button class="big" data-action="wash"><span class="icon">🫧</span><span class="label">Wash</span></button>
+        <button class="big" data-action="play"><span class="icon">🪁</span><span class="label">Play</span></button>
+        <button class="big" data-action="rest"><span class="icon">🛌</span><span class="label">Rest</span></button>
+      </div>
+    </section>
+
+    <section class="tabs">
+      <button class="tab active" data-tab="adl">My Day</button>
+      <button class="tab" data-tab="rewards">Rewards</button>
+      <button class="tab" data-tab="settings">Settings</button>
+    </section>
+
+    <section id="adl" class="panel">
+      <h2>My Day</h2>
+      <div id="routineList" class="routine"></div>
+      <button id="startRoutine" class="primary">Start steps</button>
+    </section>
+
+    <section id="rewards" class="panel hidden">
+      <h2>Rewards</h2>
+      <div id="badgeRow" class="badges" aria-live="polite"></div>
+      <p class="muted">Do your steps and care for your buddy to earn stars.</p>
+    </section>
+
+    <section id="settings" class="panel hidden">
+      <h2>Settings</h2>
+      <fieldset>
+        <legend>Display</legend>
+        <label><input type="checkbox" id="largeText"> Large text</label>
+        <label><input type="checkbox" id="symbolOnly"> Symbols only (hide words)</label>
+        <label><input type="checkbox" id="reducedMotion"> Reduce animations</label>
+        <label><input type="checkbox" id="voiceOn"> Voice prompts</label>
+      </fieldset>
+      <fieldset>
+        <legend>Caregiver</legend>
+        <label>PIN (optional): <input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="****" maxlength="4"></label>
+        <button id="editRoutine" class="secondary">Edit routine</button>
+      </fieldset>
+      <dialog id="routineDialog">
+        <h3>Edit routine</h3>
+        <p class="muted">One step per line (emoji then short words). Example: 🪥 Brush teeth</p>
+        <textarea id="routineText" rows="8"></textarea>
+        <form method="dialog">
+          <button id="saveRoutine" class="primary">Save</button>
+          <button class="ghost">Cancel</button>
+        </form>
+      </dialog>
+    </section>
+  </main>
+
+  <footer class="bottombar">
+    <button id="privacyBtn" class="ghost small">Privacy</button>
+    <dialog id="privacyDialog">
+      <h3>Privacy</h3>
+      <p>All data stays on this device. No login. Works offline after first load.</p>
+      <form method="dialog"><button class="primary">Close</button></form>
+    </dialog>
+  </footer>
+</body>
+</html>
